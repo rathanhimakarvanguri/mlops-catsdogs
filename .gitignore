@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+data/processed/
+mlruns/
+mlartifacts/
+artifacts/
+app/model.pt
+*.egg-info/
+.pytest_cache/.DS_Store
+data/raw/
