@@ -39,10 +39,9 @@ jobs:
         run: python src/preprocess.py
 
       - name: Train model (produces app/model.pt for the image)
-        run: |
-          cd src
-          python train.py --epochs 3
-          cd ..
+        env:
+          PYTHONPATH: src
+        run: python src/train.py --epochs 3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
