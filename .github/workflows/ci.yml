@@ -35,6 +35,15 @@ jobs:
       - name: Run unit tests
         run: pytest tests/ -v
 
+      - name: Preprocess data
+        run: python src/preprocess.py
+
+      - name: Train model (produces app/model.pt for the image)
+        run: |
+          cd src
+          python train.py --epochs 3
+          cd ..
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
