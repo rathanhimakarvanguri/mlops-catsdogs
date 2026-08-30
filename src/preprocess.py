@@ -68,14 +68,22 @@ def split(items, train=0.8, val=0.1, seed=42):
 
 def build_split(items: List[Tuple[Path, int]], is_train: bool) -> Tuple[np.ndarray, np.ndarray]:
     X, y = [], []
+    skipped = 0
     for path, label in items:
-        img = Image.open(path).convert("RGB")
+        try:
+            img = Image.open(path).convert("RGB")
+            img.load()  # force decode now to catch truncated/corrupt files
+        except Exception:
+            skipped += 1
+            continue
         if is_train:
             img = augment(img)
         img = img.resize((IMG_SIZE, IMG_SIZE), Image.BILINEAR)
         arr = np.asarray(img, dtype=np.float32) / 255.0
         X.append(np.transpose(arr, (2, 0, 1)))  # CHW
         y.append(label)
+    if skipped:
+        print(f"  (skipped {skipped} unreadable/corrupt image(s))")
     if not X:
         return np.zeros((0, 3, IMG_SIZE, IMG_SIZE), dtype=np.float32), np.zeros((0,), dtype=np.int64)
     return np.stack(X), np.array(y, dtype=np.int64)
