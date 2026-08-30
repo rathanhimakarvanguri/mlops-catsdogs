@@ -31,7 +31,7 @@ MODEL_PATH = os.environ.get("MODEL_PATH", str(Path(__file__).resolve().parent / 
 logger = logging.getLogger("catsdogs_api")
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-app = FastAPI(title="Cats vs Dogs Classifier", version="1.0.1")
+app = FastAPI(title="Cats vs Dogs Classifier", version="1.0.2")
 
 REQUEST_COUNT = Counter(
     "inference_requests_total", "Total inference requests", ["endpoint", "status"]
